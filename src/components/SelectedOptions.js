@@ -49,8 +49,6 @@ export default function SelectedOptions({ $target, initialState }) {
   };
   this.render();
 
-  console.log(this);
-
   $component.addEventListener("change", (e) => {
     if (e.target.tagName === "INPUT") {
       try {

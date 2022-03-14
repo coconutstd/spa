@@ -17,6 +17,7 @@ export default function ProductDetail({ $target, initialState }) {
 
     if (selectedOptions) {
       selectedOptions.setState({
+        ...this.state,
         selectedOptions: this.state.selectedOptions,
       });
     }
@@ -58,6 +59,7 @@ export default function ProductDetail({ $target, initialState }) {
         selectedOptions: this.state.selectedOptions,
       },
     });
+    console.log(selectedOptions);
   };
 
   this.render();
@@ -84,12 +86,10 @@ export default function ProductDetail({ $target, initialState }) {
             quantity: 1,
           },
         ];
-        console.log(this.state);
         this.setState({
           ...this.state,
           selectedOptions: nextSelectedOptions,
         });
-        console.log(this.state);
       }
     }
   });
