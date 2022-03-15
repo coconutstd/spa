@@ -1,11 +1,14 @@
 import { request } from "../api.js";
 import { getItem } from "../storage.js";
 import { routeChange } from "../router.js";
+import Cart from "../components/Cart.js";
 
 export default function CartPage({ $target }) {
   const $page = document.createElement("div");
   $page.className = "CartPage";
   $page.innerHTML = "<h1>장바구니</h1>";
+
+  let cartComponent = null;
 
   const cartData = getItem("products_cart", []);
   this.state = {
@@ -23,6 +26,12 @@ export default function CartPage({ $target }) {
       routeChange("/");
     } else {
       $target.appendChild($page);
+      if (this.state.products && !cartComponent) {
+        cartComponent = new Cart({
+          $target: $page,
+          initialState: this.state.products,
+        });
+      }
     }
   };
 

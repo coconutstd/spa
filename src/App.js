@@ -7,7 +7,6 @@ export default function App({ $target }) {
   this.route = () => {
     const { pathname } = location;
     $target.innerHTML = "";
-    console.log($target);
     if (pathname === "/") {
       new ProductListPage({ $target }).render();
     } else if (pathname.indexOf("/products/") === 0) {
