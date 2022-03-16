@@ -1,29 +1,32 @@
 import { request } from "../api.js";
 import ProductList from "../components/ProductList.js";
 
-export default function ProductListPage({ $target }) {
-  const $page = document.createElement("div");
-  $page.className = "ProductListPage";
-  $page.innerHTML = "<h1>상품 목록</h1>";
+export default class ProductListPage {
+  constructor({ $target }) {
+    this.$target = $target;
+    this.state = null;
+    this.$page = document.createElement("div");
+    this.$page.className = "ProductListPage";
+    this.$page.innerHTML = "<h1>상품 목록</h1>";
+    this.fetchProducts().then((products) => {
+      const productList = new ProductList({
+        $target: this.$page,
+        initialState: products,
+      });
+    });
+  }
 
-  this.render = () => {
-    $target.appendChild($page);
-  };
+  render() {
+    this.$target.appendChild(this.$page);
+  }
 
-  this.setState = (nextState) => {
+  setState(nextState) {
     this.state = nextState;
-  };
+  }
 
-  const fetchProducts = async () => {
+  async fetchProducts() {
     const products = await request("/products");
     this.setState(products);
     return products;
-  };
-
-  fetchProducts().then((products) => {
-    const productList = new ProductList({
-      $target: $page,
-      initialState: products,
-    });
-  });
+  }
 }
