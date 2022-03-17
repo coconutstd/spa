@@ -1,42 +1,46 @@
 import { request } from "../api.js";
 import ProductDetail from "../components/ProductDetail.js";
 
-export default function ProductDetailPage({ $target, productId }) {
-  this.state = {
-    productId,
-    product: null,
-  };
-  const $page = document.createElement("div");
-  $page.className = "ProductDetailPage";
+export default class ProductDetailPage {
+  constructor({ $target, productId }) {
+    this.state = {
+      productId,
+      product: null,
+    };
+    this.$target = $target;
 
-  $page.innerHTML = "<h1>상품 정보</h1>";
+    this.$page = document.createElement("div");
+    this.$page.className = "ProductDetailPage";
+    this.$page.innerHTML = "<h1>상품 정보</h1>";
 
-  this.setState = (nextState) => {
-    this.state = nextState;
+    this.fetchProduct();
     this.render();
-  };
+  }
 
-  this.render = () => {
+  render = () => {
     if (!this.state.product) {
-      $target.innerHTML = "Loading...";
+      this.$target.innerHTML = "Loading...";
     } else {
-      $target.innerHTML = "";
-      $target.appendChild($page);
+      this.$target.innerHTML = "";
+      this.$target.appendChild(this.$page);
       new ProductDetail({
-        $target,
+        $target: this.$target,
         initialState: { product: this.state.product, selectedOptions: [] },
       });
     }
   };
 
-  this.fetchProduct = async () => {
+  setState = (nextState) => {
+    this.state = nextState;
+    this.render();
+  };
+
+  async fetchProduct() {
     const { productId } = this.state;
     const product = await request(`/products/${productId}`);
     this.setState({
       ...this.state,
       product,
     });
-  };
-
-  this.fetchProduct();
+  }
 }

@@ -1,21 +1,19 @@
 import { routeChange } from "../router.js";
 
-export default function ProductList({ $target, initialState }) {
-  const $productList = document.createElement("ul");
-  $target.appendChild($productList);
-
-  this.state = initialState;
-
-  this.setState = (nextState) => {
-    this.state = nextState;
+export default class ProductList {
+  constructor({ $target, initialState }) {
+    this.$productList = document.createElement("ul");
+    $target.appendChild(this.$productList);
+    this.state = initialState;
+    this.initEventLister();
     this.render();
-  };
+  }
 
-  this.render = () => {
+  render = () => {
     if (!this.state) {
       return;
     }
-    $productList.innerHTML = `
+    this.$productList.innerHTML = `
             ${this.state
               .map(
                 (product) =>
@@ -32,14 +30,19 @@ export default function ProductList({ $target, initialState }) {
         `;
   };
 
-  this.render();
+  setState = (nextState) => {
+    this.state = nextState;
+    this.render();
+  };
 
-  $productList.addEventListener("click", (e) => {
-    const $li = e.target.closest("li");
-    const { productId } = $li.dataset;
+  initEventLister() {
+    this.$productList.addEventListener("click", (e) => {
+      const $li = e.target.closest("li");
+      const { productId } = $li.dataset;
 
-    if (productId) {
-      routeChange(`./products/${productId}`);
-    }
-  });
+      if (productId) {
+        routeChange(`./products/${productId}`);
+      }
+    });
+  }
 }

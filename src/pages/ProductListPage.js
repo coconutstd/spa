@@ -8,16 +8,13 @@ export default class ProductListPage {
     this.$page = document.createElement("div");
     this.$page.className = "ProductListPage";
     this.$page.innerHTML = "<h1>상품 목록</h1>";
-    this.fetchProducts().then((products) => {
-      const productList = new ProductList({
-        $target: this.$page,
-        initialState: products,
-      });
-    });
+    this.render();
   }
 
-  render() {
+  async render() {
     this.$target.appendChild(this.$page);
+    const products = await this.fetchProducts();
+    new ProductList({ $target: this.$page, initialState: products });
   }
 
   setState(nextState) {
